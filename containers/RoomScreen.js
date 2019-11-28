@@ -45,8 +45,9 @@ export default function RoomScreen() {
       ) : (
         <View style={styles.container}>
           <View style={styles.room}>
+            {/* create a carrousel of pics using the room pics  */}
             <Carrousel photos={room.photos} />
-            {/* <Image style={styles.image} source={{ uri: room.photos[0] }} /> */}
+
             <View style={styles.infos}>
               <View style={styles.infosUp}>
                 <View style={styles.price}>

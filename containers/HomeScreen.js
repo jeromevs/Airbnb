@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 
 import axios from "axios";
-import Header from "../components/Header";
+
 import RentCard from "../components/RentCard";
 
 export default function HomeScreen() {
@@ -21,7 +21,6 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.upPage}>
-      {/* <Header /> */}
       <RentCard offer={offer} />
     </View>
   );

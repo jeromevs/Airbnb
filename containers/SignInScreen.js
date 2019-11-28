@@ -5,13 +5,16 @@ import {
   TextInput,
   View,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  KeyboardAvoidingView
 } from "react-native";
 import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/core";
 
 export default function SignInScreen({ setToken }) {
+  const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -36,44 +39,57 @@ export default function SignInScreen({ setToken }) {
   return (
     <View>
       <View style={styles.home}>
-        <Ionicons style={styles.icon} name="md-home" size={120} color="white" />
-        <Text style={styles.welcome}>Welcome </Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Username"
-          placeholderTextColor="white"
-          value={email}
-          onChangeText={text => {
-            setEmail(text.toLowerCase());
-          }}
-        />
-        <View style={styles.bar}></View>
-
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry={true}
-          placeholderTextColor="white"
-          value={password}
-          onChangeText={text => {
-            setPassword(text);
-          }}
-        />
-        <View style={styles.bar}></View>
-        <TouchableOpacity
-          style={styles.button}
-          title="Login"
-          mode="contained"
-          onPress={handleChange}
+        <View style={styles.homeHeader}>
+          <Ionicons
+            style={styles.icon}
+            name="md-home"
+            size={120}
+            color="white"
+          />
+          <Text style={styles.welcome}>Welcome </Text>
+        </View>
+        <KeyboardAvoidingView
+          behavior="padding"
+          keyboardVerticalOffset={150}
+          style={styles.keyboardAV}
         >
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <Button
-          title="Sign up"
-          onPress={() => {
-            navigation.navigate("Sign_up");
-          }}
-        />
+          <TextInput
+            style={styles.input}
+            placeholder="Email Address"
+            placeholderTextColor="white"
+            value={email}
+            onChangeText={text => {
+              setEmail(text.toLowerCase());
+            }}
+          />
+          <View style={styles.bar}></View>
+
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            secureTextEntry={true}
+            placeholderTextColor="white"
+            value={password}
+            onChangeText={text => {
+              setPassword(text);
+            }}
+          />
+          <View style={styles.bar}></View>
+          <TouchableOpacity
+            style={styles.button}
+            title="Login"
+            mode="contained"
+            onPress={handleChange}
+          >
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+          <Button
+            title="Sign up"
+            onPress={() => {
+              navigation.navigate("SignUp");
+            }}
+          />
+        </KeyboardAvoidingView>
       </View>
     </View>
   );
@@ -85,6 +101,10 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center"
   },
+  homeHeader: {
+    justifyContent: "center",
+    alignItems: "center"
+  },
   icon: { marginTop: 50 },
   welcome: {
     color: "white",
@@ -92,6 +112,11 @@ const styles = StyleSheet.create({
     fontWeight: "200",
     paddingTop: 20,
     paddingBottom: 30
+  },
+  keyboardAV: {
+    flex: 1,
+    paddingTop: 100,
+    alignItems: "center"
   },
   input: {
     color: "white",

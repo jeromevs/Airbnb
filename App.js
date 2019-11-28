@@ -9,6 +9,7 @@ import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SettingsScreen from "./containers/SettingsScreen";
 import RoomScreen from "./containers/RoomScreen";
+import SignUpScreen from "./containers/SignUpScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -50,9 +51,25 @@ export default function App() {
           <Stack.Screen name="Splash" component={() => null} />
         ) : userToken === null ? (
           // No token found, user isn't signed in
-          <Stack.Screen name="SignIn" options={{ header: () => null }}>
-            {() => <SignInScreen setToken={setToken} />}
-          </Stack.Screen>
+          <>
+            <Stack.Screen name="SignIn" options={{ header: () => null }}>
+              {() => <SignInScreen setToken={setToken} />}
+            </Stack.Screen>
+            <Stack.Screen
+              name="SignUp"
+              options={{
+                title: "SignUp",
+                headerStyle: { backgroundColor: "#FF5A5F" },
+                headerTitleStyle: {
+                  color: "white",
+                  fontSize: 30,
+                  fontWeight: "300"
+                }
+              }}
+            >
+              {() => <SignUpScreen setToken={setToken} />}
+            </Stack.Screen>
+          </>
         ) : (
           // User is signed in
           <Stack.Screen name="Tab" options={{ header: () => null }}>
