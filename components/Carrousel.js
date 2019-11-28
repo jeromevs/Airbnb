@@ -5,7 +5,7 @@ import { Image, StyleSheet } from "react-native";
 const Carrousel = props => {
   const photos = props.photos;
   let arrayPhotos = [];
-
+  //Create an array of <Image/> to be displayed in the Swiper
   for (let i = 0; i < photos.length; i++) {
     arrayPhotos.push(
       <Image key={i} style={styles.image} source={{ uri: photos[i] }} />
@@ -14,7 +14,14 @@ const Carrousel = props => {
 
   return (
     <>
-      <Swiper horizontal={true}>{arrayPhotos}</Swiper>
+      <Swiper
+        horizontal={true}
+        showsButtons={true}
+        showsPagination={false}
+        autoplay={true}
+      >
+        {arrayPhotos}
+      </Swiper>
     </>
   );
 };

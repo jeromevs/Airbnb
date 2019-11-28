@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import {
-  Button,
   Text,
   TextInput,
   View,
   StyleSheet,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  Switch
 } from "react-native";
 import Constants from "expo-constants";
 import axios from "axios";
@@ -14,7 +15,9 @@ export default function SignUpScreen({ setToken }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [confirmedPassword, setConfirmedPassword] = useState("");
+  const [CGV, setCGV] = useState(false);
+  //Create a new user by retreiving basic infos from the user to send to the api and fetch the token to change the user status to connected
   const handleChange = async () => {
     try {
       const response = await axios.post(
@@ -73,7 +76,48 @@ export default function SignUpScreen({ setToken }) {
           }}
         />
         <View style={styles.bar}></View>
-        <Button title="Sign up" onPress={handleChange} />
+        <TextInput
+          placeholder="Confirm Password"
+          secureTextEntry={true}
+          style={styles.input}
+          placeholderTextColor="white"
+          value={confirmedPassword}
+          onChangeText={text => {
+            setConfirmedPassword(text);
+          }}
+        />
+        <View style={styles.bar}></View>
+        <View style={styles.CGV}>
+          <Switch
+            disabled={false}
+            onValueChange={value => {
+              setCGV(!CGV);
+            }}
+          />
+          <Text style={styles.CGVText}>
+            I agree with the terms and conditions
+          </Text>
+        </View>
+
+        {confirmedPassword !== password || CGV === false ? (
+          <TouchableOpacity
+            title="Sign up"
+            style={styles.buttonOff}
+            onPress={() => {
+              alert("Password Error !");
+            }}
+          >
+            <Text style={styles.buttonOffText}>Sign Up</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            title="Sign up"
+            style={styles.button}
+            onPress={handleChange}
+          >
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </TouchableOpacity>
+        )}
       </KeyboardAvoidingView>
     </View>
   );
@@ -83,18 +127,14 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight,
     backgroundColor: "#FF5A5F",
-    height: "100%",
+    flex: 1,
     alignItems: "center"
   },
   keyboardAV: {
     flex: 1,
     paddingTop: 100,
-    alignItems: "center"
-  },
-  text: {
-    fontSize: 35,
-    fontWeight: "200",
-    color: "white"
+    alignItems: "center",
+    backgroundColor: "#FF5A5F"
   },
   input: {
     color: "white",
@@ -109,5 +149,43 @@ const styles = StyleSheet.create({
     width: 300,
     height: 0.5,
     backgroundColor: "white"
+  },
+  CGV: {
+    flexDirection: "row",
+    paddingTop: 20,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  CGVText: {
+    paddingLeft: 10,
+    color: "white"
+  },
+  button: {
+    height: 60,
+    width: 150,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+    borderRadius: 30
+  },
+  buttonOff: {
+    height: 60,
+    width: 150,
+    backgroundColor: "grey",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+    borderRadius: 30
+  },
+  buttonText: {
+    color: "#FF5A5F",
+    fontSize: 25,
+    fontWeight: "200"
+  },
+  buttonOffText: {
+    color: "white",
+    fontSize: 25,
+    fontWeight: "200"
   }
 });

@@ -17,7 +17,7 @@ export default function SignInScreen({ setToken }) {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  //Control of the identity of the user and setting is token
   const handleChange = async () => {
     try {
       const response = await axios.post(
@@ -31,6 +31,7 @@ export default function SignInScreen({ setToken }) {
       const userToken = response.data.token;
       setToken(userToken);
     } catch (error) {
+      // no user found means or bad input on credential or user doesn't exist in the database
       console.log(error.message);
       alert("Invalid credentials");
     }

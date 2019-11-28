@@ -79,7 +79,7 @@ export default function RoomScreen() {
                 />
               </View>
               <TouchableOpacity
-                //   permet d afficher 3 lines de texte par defaut et plus si clique
+                //   allows to display 3 lines of text or more if clicked
                 onPress={() => {
                   setTextView(!textView);
                 }}
@@ -95,7 +95,7 @@ export default function RoomScreen() {
             </View>
           </View>
           <View style={styles.map}>
-            {/* affiche une carte centree sur Paris */}
+            {/* display a map centered on Paris */}
             <MapView
               style={styles.mapDisplay}
               initialRegion={{
@@ -106,7 +106,7 @@ export default function RoomScreen() {
               }}
               provider="google"
             >
-              {/* affiche l adresse de l'appartement */}
+              {/* display a pointer focused on the element address */}
               <MapView.Marker
                 coordinate={{
                   longitude: room.loc[0],

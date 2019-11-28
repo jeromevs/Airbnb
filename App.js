@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AsyncStorage } from "react-native";
 import { NavigationNativeContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -10,13 +10,14 @@ import SignInScreen from "./containers/SignInScreen";
 import SettingsScreen from "./containers/SettingsScreen";
 import RoomScreen from "./containers/RoomScreen";
 import SignUpScreen from "./containers/SignUpScreen";
+import MapListScreen from "./containers/MapListScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [userToken, setUserToken] = React.useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [userToken, setUserToken] = useState(null);
 
   const setToken = async token => {
     if (token) {
@@ -28,8 +29,8 @@ export default function App() {
     setUserToken(token);
   };
 
-  React.useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
+  useEffect(() => {
+    // Fetch the token from storage then navigate to the appropriate place
     const bootstrapAsync = async () => {
       // We should also handle error for production apps
       const userToken = await AsyncStorage.getItem("userToken");
@@ -132,6 +133,18 @@ export default function App() {
                         options={{ title: "User Profile" }}
                       >
                         {() => <ProfileScreen />}
+                      </Stack.Screen>
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
+                <Tab.Screen name="MapList">
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="MapList"
+                        options={{ title: "MapList" }}
+                      >
+                        {() => <MapListScreen />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}

@@ -10,7 +10,7 @@ import {
 
 import { useNavigation } from "@react-navigation/core";
 import StarReview from "./StarReview";
-
+//create a flatlist of each element of the array with a transfer on click to the detailed page of each element
 const RentCard = props => {
   const navigation = useNavigation();
   return (
@@ -24,7 +24,7 @@ const RentCard = props => {
           <>
             <TouchableOpacity
               onPress={() => {
-                //renvoie la valeur de l'id a la page RoomScreen
+                //transfer the user to the RoomScreen of the element
                 navigation.navigate("Room", { roomId: item._id });
               }}
               style={styles.page}
@@ -54,6 +54,7 @@ const RentCard = props => {
                       {item.title}
                     </Text>
                     <View style={styles.rating}>
+                      {/* initiate a color dynamic row of stars depending on the rating value */}
                       <StarReview ratingValue={item.ratingValue} />
 
                       <Text style={styles.ratingText}>{item.reviews}</Text>
