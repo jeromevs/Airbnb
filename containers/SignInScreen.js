@@ -6,14 +6,15 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ScrollView
 } from "react-native";
 import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/core";
 
-export default function SignInScreen({ setToken }) {
+export default function SignInScreen({ setToken, setId }) {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +22,7 @@ export default function SignInScreen({ setToken }) {
   const handleChange = async () => {
     try {
       const response = await axios.post(
-        "https://airbnb-api.now.sh/api/user/log_in",
+        "https://airbnb-api.herokuapp.com/api/user/log_in",
         {
           email: email,
           password: password
@@ -29,7 +30,10 @@ export default function SignInScreen({ setToken }) {
       );
 
       const userToken = response.data.token;
+      const Id = response.data._id;
+      setId(Id);
       setToken(userToken);
+      // setUserId(userId);
     } catch (error) {
       // no user found means or bad input on credential or user doesn't exist in the database
       console.log(error.message);
@@ -39,59 +43,61 @@ export default function SignInScreen({ setToken }) {
 
   return (
     <View>
-      <View style={styles.home}>
-        <View style={styles.homeHeader}>
-          <Ionicons
-            style={styles.icon}
-            name="md-home"
-            size={120}
-            color="white"
-          />
-          <Text style={styles.welcome}>Welcome </Text>
-        </View>
-        <KeyboardAvoidingView
-          behavior="padding"
-          keyboardVerticalOffset={150}
-          style={styles.keyboardAV}
-        >
-          <TextInput
-            style={styles.input}
-            placeholder="Email Address"
-            placeholderTextColor="white"
-            value={email}
-            onChangeText={text => {
-              setEmail(text.toLowerCase());
-            }}
-          />
-          <View style={styles.bar}></View>
-
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            secureTextEntry={true}
-            placeholderTextColor="white"
-            value={password}
-            onChangeText={text => {
-              setPassword(text);
-            }}
-          />
-          <View style={styles.bar}></View>
-          <TouchableOpacity
-            style={styles.button}
-            title="Login"
-            mode="contained"
-            onPress={handleChange}
+      <ScrollView>
+        <View style={styles.home}>
+          <View style={styles.homeHeader}>
+            <Ionicons
+              style={styles.icon}
+              name="md-home"
+              size={120}
+              color="white"
+            />
+            <Text style={styles.welcome}>Welcome </Text>
+          </View>
+          <KeyboardAvoidingView
+            behavior="padding"
+            keyboardVerticalOffset={200}
+            style={styles.keyboardAV}
           >
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
-          <Button
-            title="Sign up"
-            onPress={() => {
-              navigation.navigate("SignUp");
-            }}
-          />
-        </KeyboardAvoidingView>
-      </View>
+            <TextInput
+              style={styles.input}
+              placeholder="Email Address"
+              placeholderTextColor="white"
+              value={email}
+              onChangeText={text => {
+                setEmail(text.toLowerCase());
+              }}
+            />
+            <View style={styles.bar}></View>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              secureTextEntry={true}
+              placeholderTextColor="white"
+              value={password}
+              onChangeText={text => {
+                setPassword(text);
+              }}
+            />
+            <View style={styles.bar}></View>
+            <TouchableOpacity
+              style={styles.button}
+              title="Login"
+              mode="contained"
+              onPress={handleChange}
+            >
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+            <Button
+              title="Sign up"
+              onPress={() => {
+                navigation.navigate("SignUp");
+              }}
+            />
+          </KeyboardAvoidingView>
+        </View>
+      </ScrollView>
     </View>
   );
 }

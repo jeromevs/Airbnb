@@ -18,6 +18,7 @@ const Stack = createStackNavigator();
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
+  const [userId, setUserId] = useState("");
 
   const setToken = async token => {
     if (token) {
@@ -29,16 +30,25 @@ export default function App() {
     setUserToken(token);
   };
 
+  const setId = async Id => {
+    if (Id) {
+      AsyncStorage.setItem("userId", Id);
+    } else {
+      AsyncStorage.removeItem("userId");
+    }
+  };
+
   useEffect(() => {
     // Fetch the token from storage then navigate to the appropriate place
     const bootstrapAsync = async () => {
       // We should also handle error for production apps
       const userToken = await AsyncStorage.getItem("userToken");
-
+      const userId = await AsyncStorage.getItem("userId");
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
       setIsLoading(false);
       setUserToken(userToken);
+      setUserId(userId);
     };
 
     bootstrapAsync();
@@ -54,7 +64,7 @@ export default function App() {
           // No token found, user isn't signed in
           <>
             <Stack.Screen name="SignIn" options={{ header: () => null }}>
-              {() => <SignInScreen setToken={setToken} />}
+              {() => <SignInScreen setToken={setToken} setId={setId} />}
             </Stack.Screen>
             <Stack.Screen
               name="SignUp"
@@ -68,7 +78,7 @@ export default function App() {
                 }
               }}
             >
-              {() => <SignUpScreen setToken={setToken} />}
+              {() => <SignUpScreen setToken={setToken} setId={setId} />}
             </Stack.Screen>
           </>
         ) : (
@@ -82,8 +92,12 @@ export default function App() {
                       let iconName;
                       if (route.name === "Settings") {
                         iconName = `ios-options`;
+                      } else if (route.name === "Profile") {
+                        iconName = `ios-person`;
+                      } else if (route.name === "MapList") {
+                        iconName = "ios-map";
                       } else {
-                        iconName = `ios-home`;
+                        iconName = "ios-home";
                       }
                       return (
                         <Ionicons name={iconName} size={size} color={color} />
@@ -128,11 +142,22 @@ export default function App() {
                       >
                         {() => <RoomScreen />}
                       </Stack.Screen>
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
+                <Tab.Screen name="Profile">
+                  {() => (
+                    <Stack.Navigator>
                       <Stack.Screen
                         name="Profile"
-                        options={{ title: "User Profile" }}
+                        options={{ title: "Profile" }}
                       >
-                        {() => <ProfileScreen />}
+                        {() => (
+                          <ProfileScreen
+                            userId={userId}
+                            userToken={userToken}
+                          />
+                        )}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
@@ -149,6 +174,7 @@ export default function App() {
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
+
                 <Tab.Screen name="Settings">
                   {() => (
                     <Stack.Navigator>

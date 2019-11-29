@@ -11,7 +11,7 @@ export default function HomeScreen() {
 
   const fetchData = async () => {
     const response = await axios.get(
-      "https://airbnb-api.now.sh/api/room?city=paris"
+      "https://airbnb-api.herokuapp.com/api/room?city=paris"
     );
     setOffer(response.data.rooms);
   };

@@ -6,12 +6,13 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   TouchableOpacity,
-  Switch
+  Switch,
+  ScrollView
 } from "react-native";
 import Constants from "expo-constants";
 import axios from "axios";
 
-export default function SignUpScreen({ setToken }) {
+export default function SignUpScreen({ setToken }, { setId }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +22,7 @@ export default function SignUpScreen({ setToken }) {
   const handleChange = async () => {
     try {
       const response = await axios.post(
-        "https://airbnb-api.now.sh/api/user/sign_up",
+        "https://airbnb-api.herokuapp.com/api/user/sign_up",
         {
           username: username,
           email: email,
@@ -30,6 +31,8 @@ export default function SignUpScreen({ setToken }) {
       );
 
       const userToken = response.data.token;
+      const Id = response.data._id;
+      setId(Id);
       setToken(userToken);
     } catch (error) {
       console.log(error.message);
@@ -39,86 +42,88 @@ export default function SignUpScreen({ setToken }) {
 
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView
-        behavior="padding"
-        keyboardVerticalOffset={150}
-        style={styles.keyboardAV}
-      >
-        <TextInput
-          placeholder="Username"
-          style={styles.input}
-          placeholderTextColor="white"
-          value={username}
-          onChangeText={text => {
-            setUsername(text);
-          }}
-        />
-        <View style={styles.bar}></View>
-        <TextInput
-          placeholder="Email Address"
-          style={styles.input}
-          placeholderTextColor="white"
-          autoCapitalize="none"
-          value={email}
-          onChangeText={text => {
-            setEmail(text);
-          }}
-        />
-        <View style={styles.bar}></View>
-        <TextInput
-          placeholder="Password"
-          secureTextEntry={true}
-          style={styles.input}
-          placeholderTextColor="white"
-          value={password}
-          onChangeText={text => {
-            setPassword(text);
-          }}
-        />
-        <View style={styles.bar}></View>
-        <TextInput
-          placeholder="Confirm Password"
-          secureTextEntry={true}
-          style={styles.input}
-          placeholderTextColor="white"
-          value={confirmedPassword}
-          onChangeText={text => {
-            setConfirmedPassword(text);
-          }}
-        />
-        <View style={styles.bar}></View>
-        <View style={styles.CGV}>
-          <Switch
-            disabled={false}
-            onValueChange={value => {
-              setCGV(!CGV);
+      <ScrollView>
+        <KeyboardAvoidingView
+          behavior="padding"
+          keyboardVerticalOffset={150}
+          style={styles.keyboardAV}
+        >
+          <TextInput
+            placeholder="Username"
+            style={styles.input}
+            placeholderTextColor="white"
+            value={username}
+            onChangeText={text => {
+              setUsername(text);
             }}
           />
-          <Text style={styles.CGVText}>
-            I agree with the terms and conditions
-          </Text>
-        </View>
-
-        {confirmedPassword !== password || CGV === false ? (
-          <TouchableOpacity
-            title="Sign up"
-            style={styles.buttonOff}
-            onPress={() => {
-              alert("Password Error !");
+          <View style={styles.bar}></View>
+          <TextInput
+            placeholder="Email Address"
+            style={styles.input}
+            placeholderTextColor="white"
+            autoCapitalize="none"
+            value={email}
+            onChangeText={text => {
+              setEmail(text);
             }}
-          >
-            <Text style={styles.buttonOffText}>Sign Up</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            title="Sign up"
-            style={styles.button}
-            onPress={handleChange}
-          >
-            <Text style={styles.buttonText}>Sign Up</Text>
-          </TouchableOpacity>
-        )}
-      </KeyboardAvoidingView>
+          />
+          <View style={styles.bar}></View>
+          <TextInput
+            placeholder="Password"
+            secureTextEntry={true}
+            style={styles.input}
+            placeholderTextColor="white"
+            value={password}
+            onChangeText={text => {
+              setPassword(text);
+            }}
+          />
+          <View style={styles.bar}></View>
+          <TextInput
+            placeholder="Confirm Password"
+            secureTextEntry={true}
+            style={styles.input}
+            placeholderTextColor="white"
+            value={confirmedPassword}
+            onChangeText={text => {
+              setConfirmedPassword(text);
+            }}
+          />
+          <View style={styles.bar}></View>
+          <View style={styles.CGV}>
+            <Switch
+              disabled={false}
+              onValueChange={value => {
+                setCGV(!CGV);
+              }}
+            />
+            <Text style={styles.CGVText}>
+              I agree with the terms and conditions
+            </Text>
+          </View>
+
+          {confirmedPassword !== password || CGV === false ? (
+            <TouchableOpacity
+              title="Sign up"
+              style={styles.buttonOff}
+              onPress={() => {
+                alert("Password Error !");
+              }}
+            >
+              <Text style={styles.buttonOffText}>Sign Up</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              title="Sign up"
+              style={styles.button}
+              onPress={handleChange}
+            >
+              <Text style={styles.buttonText}>Sign Up</Text>
+            </TouchableOpacity>
+          )}
+        </KeyboardAvoidingView>
+      </ScrollView>
     </View>
   );
 }

@@ -26,6 +26,7 @@ const RentCard = props => {
               onPress={() => {
                 //transfer the user to the RoomScreen of the element
                 navigation.navigate("Room", { roomId: item._id });
+                console.log(item._id);
               }}
               style={styles.page}
             >

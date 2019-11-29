@@ -24,7 +24,7 @@ export default function RoomScreen() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://airbnb-api.now.sh/api/room/" + params.roomId
+          "https://airbnb-api.herokuapp.com/api/room/" + params.roomId
         );
         setRoom(response.data);
         setIsLoading(false);

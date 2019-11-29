@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Text, View } from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import axios from "axios";
 import MapView from "react-native-maps";
+import { useNavigation } from "@react-navigation/core";
+
 const MapListScreen = () => {
+  const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const fetchData = async () => {
@@ -13,7 +16,7 @@ const MapListScreen = () => {
       setProducts(response.data.rooms);
       setIsLoading(false);
     } catch (error) {
-      alert("Erreur");
+      alert("Error");
     }
   };
   useEffect(() => {
@@ -22,7 +25,9 @@ const MapListScreen = () => {
   return (
     <View style={{ flex: 1 }}>
       {isLoading === true ? (
-        <Text>Chargement...</Text>
+        <View style={styles.activity}>
+          <ActivityIndicator size="large" color="red" />
+        </View>
       ) : (
         <View style={{ flex: 1 }}>
           <MapView
@@ -37,11 +42,16 @@ const MapListScreen = () => {
             {products.map((element, index) => {
               return (
                 <MapView.Marker
+                  onPress={() => {
+                    //transfer the user to the RoomScreen of the element
+                    navigation.navigate("Room", { roomId: element._id });
+                    console.log(element._id);
+                  }}
+                  key={index}
                   coordinate={{
                     latitude: element.loc[1],
                     longitude: element.loc[0]
                   }}
-                  key={index}
                 />
               );
             })}
@@ -51,4 +61,12 @@ const MapListScreen = () => {
     </View>
   );
 };
+const styles = StyleSheet.create({
+  activity: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  }
+});
+
 export default MapListScreen;
