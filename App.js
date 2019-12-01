@@ -150,7 +150,15 @@ export default function App() {
                     <Stack.Navigator>
                       <Stack.Screen
                         name="Profile"
-                        options={{ title: "Profile" }}
+                        options={{
+                          title: "Profile",
+                          headerStyle: { backgroundColor: "#FF5A5F" },
+                          headerTitleStyle: {
+                            color: "white",
+                            fontSize: 30,
+                            fontWeight: "300"
+                          }
+                        }}
                       >
                         {() => (
                           <ProfileScreen

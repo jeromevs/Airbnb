@@ -33,7 +33,6 @@ export default function SignInScreen({ setToken, setId }) {
       const Id = response.data._id;
       setId(Id);
       setToken(userToken);
-      // setUserId(userId);
     } catch (error) {
       // no user found means or bad input on credential or user doesn't exist in the database
       console.log(error.message);
@@ -112,7 +111,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  icon: { marginTop: 50 },
+  icon: { marginTop: 10 },
   welcome: {
     color: "white",
     fontSize: 50,

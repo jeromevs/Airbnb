@@ -7,12 +7,13 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Switch,
-  ScrollView
+  ScrollView,
+  SafeAreaView
 } from "react-native";
 import Constants from "expo-constants";
 import axios from "axios";
 
-export default function SignUpScreen({ setToken }, { setId }) {
+export default function SignUpScreen({ setToken, setId }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -41,8 +42,8 @@ export default function SignUpScreen({ setToken }, { setId }) {
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView>
+    <ScrollView>
+      <View style={styles.container}>
         <KeyboardAvoidingView
           behavior="padding"
           keyboardVerticalOffset={150}
@@ -123,8 +124,8 @@ export default function SignUpScreen({ setToken }, { setId }) {
             </TouchableOpacity>
           )}
         </KeyboardAvoidingView>
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 }
 

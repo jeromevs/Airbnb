@@ -61,22 +61,24 @@ export default function RoomScreen() {
                     {room.price}$
                   </Text>
                 </View>
-                <View style={styles.infosUpBlock}>
-                  <Text style={{ fontSize: 20 }}>{room.title}</Text>
-                  <View style={styles.rating}>
-                    <StarReview ratingValue={room.ratingValue} />
+                <View style={{ flexDirection: "row", paddingRight: 20 }}>
+                  <View style={styles.infosUpBlock}>
+                    <Text style={{ fontSize: 20 }}>{room.title}</Text>
+                    <View style={styles.rating}>
+                      <StarReview ratingValue={room.ratingValue} />
 
-                    <Text style={styles.ratingText}>{room.reviews}</Text>
-                    <Text style={styles.ratingText}> reviews</Text>
+                      <Text style={styles.ratingText}>{room.reviews}</Text>
+                      <Text style={styles.ratingText}> reviews</Text>
+                    </View>
                   </View>
+                  <Image
+                    style={styles.avatar}
+                    source={{
+                      uri: room.user.account.photos[0]
+                    }}
+                    resizeMode="contain"
+                  />
                 </View>
-                <Image
-                  style={styles.avatar}
-                  source={{
-                    uri: room.user.account.photos[0]
-                  }}
-                  resizeMode="contain"
-                />
               </View>
               <TouchableOpacity
                 //   allows to display 3 lines of text or more if clicked
@@ -85,12 +87,14 @@ export default function RoomScreen() {
                 }}
                 style={styles.description}
               >
-                <Text
-                  style={styles.textDescription}
-                  numberOfLines={textView === false ? 3 : null}
-                >
-                  {room.description}
-                </Text>
+                <View>
+                  <Text
+                    style={styles.textDescription}
+                    numberOfLines={textView === false ? 3 : null}
+                  >
+                    {room.description}
+                  </Text>
+                </View>
               </TouchableOpacity>
             </View>
           </View>
@@ -142,13 +146,15 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingHorizontal: 20
   },
+  infosUpBlock: {},
   infosUp: {
     flex: 1,
     flexDirection: "row",
     paddingTop: 20
   },
   description: {
-    flex: 1
+    flex: 1,
+    height: 200
   },
   rating: {
     flexDirection: "row",
@@ -160,6 +166,7 @@ const styles = StyleSheet.create({
   textDescription: {
     fontSize: 16
   },
+
   price: {
     backgroundColor: "black",
     height: 35,
@@ -177,12 +184,12 @@ const styles = StyleSheet.create({
     borderRadius: 35
   },
   map: {
-    flex: 2,
+    height: 250,
     backgroundColor: "white",
     padding: 20
   },
   mapDisplay: {
     width: "100%",
-    height: "100%"
+    height: "80%"
   }
 });
